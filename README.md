@@ -5,6 +5,7 @@ While my experience with CC has so far been limited to the Narval cluster (as it
 
 ## Table of Contents
 - [Overview and Resources](#overview-and-resources)
+    - [Logging in with SSH](#logging-in-with-ssh)
     - [Directory Structure](#directory-structure)
     - [Virtual Environments](#virtual-environments)
     - [Useful tmux Commands](#useful-tmux-commands)
