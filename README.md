@@ -27,6 +27,38 @@ While my experience with CC has so far been limited to the Narval cluster (as it
 - [Narval Portal](https://portail.narval.calculquebec.ca)
 - [A Complete Guide for using Compute Canada for Deep Learning](https://prashp.gitlab.io/post/compute-canada-tut/) (external blogpost)
 
+### Logging in with SSH
+I'm going to skip some of the early steps on how to set up your SSH keys and such. If you need help with this, check out the official wiki or external blogpost linked above. I will however include my `.ssh/config` file which I use to make it easier to log in to the cluster. Once you upload your public key to the [CCDB portal](https://docs.alliancecan.ca/wiki/SSH_Keys#Installing_your_key), it won't ask for your password when connecting. Feel free to modify this to your liking. See [https://docs.alliancecan.ca/wiki/Visual_Studio_Code/en](https://docs.alliancecan.ca/wiki/Visual_Studio_Code/en) for more information on using VSCode with the cluster.
+
+```bash
+# Digital Research Alliance of Canada #
+Host beluga cedar graham narval
+  ServerAliveInterval 300
+  HostName %h.alliancecan.ca
+  IdentityFile ~/.ssh/<your_private_key>    # specify your SSH key (also setup with GitHub)
+  User <your_username>                      # specify your username
+  ForwardAgent yes
+
+Host narval1 narval2 narval3                # specify individual login nodes when using tmux
+  HostName %h.alliancecan.ca
+  IdentityFile ~/.ssh/<your_private_key>    # specify your SSH key (also setup with GitHub)
+  User <your_username>                      # specify your username
+  ForwardAgent yes
+
+Host bc????? bg????? bl?????
+  ProxyJump beluga
+
+Host cdr*
+  ProxyJump cedar
+
+Host gra1* gra2* gra3* gra4* gra5* gra6* gra7* gra8* gra9*
+  ProxyJump graham
+
+Host nc????? ng????? nl?????
+  ProxyJump narval
+```
+
+> Note that ControlMaster, which is used to reduce the need to re-authenticate with Duo within a specified time period, caused me issues with Agent Forwarding, which made git commits fail as the SSH agent was not being forwarded properly. I recommend disabling this option in your SSH config file if you are using Agent Forwarding.
 
 ### Directory Structure
 The following is a quick introduction to the directory structure of the cluster (see more here [https://docs.alliancecan.ca/wiki/Storage_and_file_management](https://docs.alliancecan.ca/wiki/Storage_and_file_management)).
